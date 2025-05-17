@@ -26,7 +26,7 @@ export const AuthProvider = ({ children }) => {
       setLoading(true);
       setError(null);
       
-      const response = await axios.post('http://localhost:5000/api/auth/register', userData);
+      const response = await axios.post('http://localhost:5001/api/auth/register', userData);
       
       // Set user and token in local storage
       localStorage.setItem('user', JSON.stringify(response.data));
@@ -50,7 +50,7 @@ export const AuthProvider = ({ children }) => {
       setLoading(true);
       setError(null);
       
-      const response = await axios.post('http://localhost:5000/api/auth/login', userData);
+      const response = await axios.post('http://localhost:5001/api/auth/login', userData);
       
       // Set user and token in local storage
       localStorage.setItem('user', JSON.stringify(response.data));
@@ -89,7 +89,7 @@ export const AuthProvider = ({ children }) => {
         }
       };
       
-      const response = await axios.get('http://localhost:5000/api/auth/me', config);
+      const response = await axios.get('http://localhost:5001/api/auth/me', config);
       
       setLoading(false);
       return response.data;
