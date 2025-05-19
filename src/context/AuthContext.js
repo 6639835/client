@@ -61,16 +61,31 @@ export const AuthProvider = ({ children }) => {
     }
   );
 
-  // Load user from storage when app starts
+  // Load user from storage when app starts - improved to avoid flashing
   useEffect(() => {
-    const storedUser = localStorage.getItem('user');
-    if (storedUser) {
-      const parsedUser = JSON.parse(storedUser);
-      setUser(parsedUser);
-      setIsAuthenticated(true);
-      setLastActivity(new Date().toISOString());
-    }
-    setLoading(false);
+    const initAuth = () => {
+      try {
+        const storedUser = localStorage.getItem('user');
+        if (storedUser) {
+          const parsedUser = JSON.parse(storedUser);
+          setUser(parsedUser);
+          setIsAuthenticated(true);
+          setLastActivity(new Date().toISOString());
+        }
+      } catch (error) {
+        console.error("Error initializing auth:", error);
+        // Clear potentially corrupted data
+        localStorage.removeItem('user');
+      } finally {
+        // Delay setting loading to false slightly to ensure smooth transition
+        setTimeout(() => {
+          setLoading(false);
+        }, 300);
+      }
+    };
+    
+    // Run auth initialization
+    initAuth();
   }, []);
 
   // Update last activity timestamp on user interactions
